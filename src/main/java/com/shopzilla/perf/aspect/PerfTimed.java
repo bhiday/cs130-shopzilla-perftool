@@ -10,9 +10,9 @@ package com.shopzilla.perf.aspect;
 
 import java.lang.annotation.*;
 
-@Inherited
-@Documented
-@Target( { ElementType.TYPE, ElementType.METHOD })
+//@Inherited
+//@Documented
+@Target( { ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PerfTimed {
 }

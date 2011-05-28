@@ -7,26 +7,37 @@ package com.shopzilla.perf.aspect;
  * Time: 7:30 PM
  * To change this template use File | Settings | File Templates.
  */
+import com.shopzilla.perf.logger.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.util.Assert;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 @Aspect
+@Component
 public class TimingAspect {
 
-    @Around(value = "@annotation(a.PerfTimed) && @annotation(timed)", argNames = "timed")
-    static Object timeMethod(final ProceedingJoinPoint pjp, final PerfTimed timed) throws Throwable {
-        return time(pjp, timed);
+    @Resource
+	private Logger logger;
+
+    @Around(value = "@annotation(trace)", argNames = "pjp, trace")
+    static void timeMethod(final ProceedingJoinPoint pjp, final PerfTimed timed) throws Throwable {
+        time(pjp, timed);
     }
 
-    @Around("within(@a.PerfTimed *) && @target(timed)")
-    static Object timeClass(final ProceedingJoinPoint pjp, final PerfTimed timed) throws Throwable {
-        return time(pjp, timed);
-    }
+    //@Around(value = "within(@a.PerfTimed *) && @target(timed)", argNames = "pjp, timed")
+    //static Object timeClass(final ProceedingJoinPoint pjp, final PerfTimed timed) throws Throwable {
+    //    return time(pjp, timed);
+    //}
 
-    private static Object time(final ProceedingJoinPoint pjp, final PerfTimed timed) throws Throwable {
+    private static void time(final ProceedingJoinPoint pjp, final PerfTimed timed) throws Throwable {
 
         Assert.notNull(pjp);
         Assert.notNull(timed);
@@ -40,7 +51,7 @@ public class TimingAspect {
         final long startTimeMs = System.currentTimeMillis();
 
         try {
-            return pjp.proceed();
+            pjp.proceed();
         } finally {
 
             final long timeTakenMs = System.currentTimeMillis() - startTimeMs;

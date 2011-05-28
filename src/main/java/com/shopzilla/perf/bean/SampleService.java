@@ -11,9 +11,10 @@ import com.shopzilla.perf.aspect.PerfTimed;
 import org.springframework.stereotype.Component;
 
 @Component(value = "sampleService")
-@PerfTimed
+//@PerfTimed
 public class SampleService {
 
+    @PerfTimed
     public void sampleServiceMethod1() {
         try {
             Thread.sleep(500);
@@ -22,6 +23,7 @@ public class SampleService {
         }
     }
 
+    @PerfTimed
     public void sampleServiceMethod2() {
         try {
             Thread.sleep(500);
