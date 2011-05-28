@@ -6,5 +6,5 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-    <bean id="logger" class="com.shopzilla.perf.mock.logger.MockLogger"/>
+    <bean id="logger" class="com.shopzilla.perf.logger.MockLogger"/>
 </beans>

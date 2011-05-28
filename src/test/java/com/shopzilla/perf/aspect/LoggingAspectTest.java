@@ -6,8 +6,8 @@ import junit.framework.Assert;
 import com.shopzilla.perf.bean.SimpleBean;
 import com.shopzilla.perf.bean.SimpleBeanSubclass;
 import com.shopzilla.perf.logger.LogLevel;
-import com.shopzilla.perf.mock.logger.MockLogger;
-import com.shopzilla.perf.mock.logger.MockLogger.LogMessage;
+import com.shopzilla.perf.logger.MockLogger;
+import com.shopzilla.perf.logger.MockLogger.LogMessage;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.junit.Before;
