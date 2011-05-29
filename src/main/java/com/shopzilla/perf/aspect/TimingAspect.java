@@ -28,8 +28,8 @@ public class TimingAspect {
 	private Logger logger;
 
     @Around(value = "@annotation(trace)", argNames = "pjp, trace")
-    static void timeMethod(final ProceedingJoinPoint pjp, final PerfTimed timed) throws Throwable {
-        time(pjp, timed);
+    static Object timeMethod(final ProceedingJoinPoint pjp, final PerfTimed timed) throws Throwable {
+        return time(pjp, timed);
     }
 
     //@Around(value = "within(@a.PerfTimed *) && @target(timed)", argNames = "pjp, timed")
@@ -37,7 +37,7 @@ public class TimingAspect {
     //    return time(pjp, timed);
     //}
 
-    private static void time(final ProceedingJoinPoint pjp, final PerfTimed timed) throws Throwable {
+    private static Object time(final ProceedingJoinPoint pjp, final PerfTimed timed) throws Throwable {
 
         Assert.notNull(pjp);
         Assert.notNull(timed);
@@ -51,7 +51,7 @@ public class TimingAspect {
         final long startTimeMs = System.currentTimeMillis();
 
         try {
-            pjp.proceed();
+            return pjp.proceed();
         } finally {
 
             final long timeTakenMs = System.currentTimeMillis() - startTimeMs;
