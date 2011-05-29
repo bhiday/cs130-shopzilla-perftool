@@ -7,6 +7,7 @@ package com.shopzilla.perf.aspect;
  * Time: 7:30 PM
  * To change this template use File | Settings | File Templates.
  */
+import com.shopzilla.perf.database.PerfDataManager;
 import com.shopzilla.perf.logger.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.JoinPoint;
@@ -19,6 +20,7 @@ import org.springframework.util.Assert;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 @Aspect
 @Component
@@ -44,6 +46,7 @@ public class TimingAspect {
 
         final Signature signature = pjp.getSignature();
         final String longString = "[" + signature.toLongString() + "]";
+        final Date invokeTime = new Date();
 
         System.out.println();
         System.out.println(">>>> started " + longString);
@@ -57,6 +60,7 @@ public class TimingAspect {
             final long timeTakenMs = System.currentTimeMillis() - startTimeMs;
             System.out.println("<<<< completed " + longString + " (took " + timeTakenMs + "ms)");
             System.out.println();
+            PerfDataManager.getInstance().createAndStorePerfData(signature.toLongString(), invokeTime, timeTakenMs);
 
         }
     }
