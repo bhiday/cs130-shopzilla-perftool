@@ -3,9 +3,11 @@ package com.shopzilla.perf.database;
 import com.shopzilla.perf.data.PerfData;
 import com.shopzilla.perf.util.HibernateUtil;
 import org.hibernate.Session;
+import org.hibernate.loader.custom.CustomLoader;
 import sun.security.jca.GetInstance;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -50,5 +52,32 @@ public class PerfDataManager {
           session.getTransaction().commit();
       }
 
+      public List getPerfDataByStartDate(String startDate) {
+
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.beginTransaction();
+
+        List result = session.createQuery("FROM " + PerfData.class.getName() + " WHERE " +
+                "invokeTime > '" + startDate + "'").list();
+
+        session.getTransaction().commit();
+
+        return result;
+
+      }
+
+      public List <PerfData> getPerfDataByStartDateEndDate(String startDate, String endDate) {
+
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.beginTransaction();
+
+        List result = session.createQuery("FROM " + PerfData.class.getName() + " WHERE " +
+                "invokeTime > '" + startDate + "' AND invokeTime < '" + endDate + "'").list();
+
+        session.getTransaction().commit();
+
+        return result;
+
+      }
 
 }
