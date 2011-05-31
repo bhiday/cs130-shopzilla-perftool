@@ -8,6 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,11 +35,19 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 
+//@Transactional
 @RequestMapping("/perf")
 @Controller
 public class PerfController {
     private static final Log LOG = LogFactory.getLog(PerfController.class);
 
+    //@Autowired
+    private PerfDataManager perfDataManager;
+
+    @Autowired
+    public void setPerfDataManager(PerfDataManager perfDataManager) {
+        this.perfDataManager = perfDataManager;
+    }
 
     @PerfTimed
     @RequestMapping(value = "/starttime/{startTime}", method = RequestMethod.GET)
@@ -51,7 +60,7 @@ public class PerfController {
          SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
          String startString = formatter.format(startDate);
 
-         List result = PerfDataManager.getInstance().getPerfDataByStartDate(startString);
+         List result = perfDataManager.getPerfDataByStartDate(startString);
 
          return getXmlFromList(result);
     }
@@ -69,7 +78,7 @@ public class PerfController {
          String startString = formatter.format(startDate);
          String endString = formatter.format(endDate);
 
-         List result = PerfDataManager.getInstance().getPerfDataByStartDateEndDate(startString, endString);
+         List result = perfDataManager.getPerfDataByStartDateEndDate(startString, endString);
 
          return getXmlFromList(result);
     }

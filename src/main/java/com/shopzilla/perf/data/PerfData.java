@@ -1,5 +1,6 @@
 package com.shopzilla.perf.data;
 
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -9,11 +10,23 @@ import java.util.Date;
  * Time: 9:55 PM
  * To change this template use File | Settings | File Templates.
  */
+
+@Entity
+@Table(name = "perfdata")
 public class PerfData {
 
+    @Id
+    @GeneratedValue
+    @Column(name = "id")
     private Long id;
+
+    @Column(name = "method_name")
     private String methodName;
+
+    @Column(name = "invoke_time")
     private Date invokeTime;
+
+    @Column(name = "exec_time")
     private Long execTime;
 
     public Long getId() {

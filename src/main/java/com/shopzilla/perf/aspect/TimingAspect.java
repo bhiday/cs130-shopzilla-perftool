@@ -7,6 +7,7 @@ package com.shopzilla.perf.aspect;
  * Time: 7:30 PM
  * To change this template use File | Settings | File Templates.
  */
+import com.shopzilla.perf.data.PerfData;
 import com.shopzilla.perf.database.PerfDataManager;
 import com.shopzilla.perf.logger.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -16,6 +17,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.stereotype.Component;
 
@@ -26,8 +28,21 @@ import java.util.Date;
 @Component
 public class TimingAspect {
 
+    //@Autowired
+    private static PerfDataManager perfDataManager;
+
     @Resource
 	private Logger logger;
+
+
+    @Autowired
+    public void setPerfDataManager(PerfDataManager perfDataManager) {
+        this.perfDataManager = perfDataManager;
+    }
+
+    /*public TimingAspect(PerfDataManager perfDataManager) {
+        this.perfDataManager = perfDataManager;
+    }*/
 
     @Around(value = "@annotation(trace)", argNames = "pjp, trace")
     static Object timeMethod(final ProceedingJoinPoint pjp, final PerfTimed timed) throws Throwable {
@@ -60,7 +75,13 @@ public class TimingAspect {
             final long timeTakenMs = System.currentTimeMillis() - startTimeMs;
             System.out.println("<<<< completed " + longString + " (took " + timeTakenMs + "ms)");
             System.out.println();
-            PerfDataManager.getInstance().createAndStorePerfData(signature.toLongString(), invokeTime, timeTakenMs);
+
+            PerfData perfData = new PerfData();
+            perfData.setMethodName(signature.toLongString());
+            perfData.setInvokeTime(invokeTime);
+            perfData.setExecTime(timeTakenMs);
+
+            perfDataManager.createAndStorePerfData(perfData);
 
         }
     }

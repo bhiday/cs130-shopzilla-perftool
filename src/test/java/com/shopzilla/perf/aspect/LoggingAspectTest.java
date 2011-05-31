@@ -22,7 +22,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = {
 		"/applicationContext/applicationContext-aspect.xml",
 		"/applicationContext/applicationContext-logger.xml",
-		"/applicationContext/applicationContext.xml" })
+		"/applicationContext/applicationContext.xml",
+        "/META-INF/spring/integration-data.xml"})
 public class LoggingAspectTest {
 
 	@Autowired
